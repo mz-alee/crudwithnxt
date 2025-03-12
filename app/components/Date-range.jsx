@@ -102,59 +102,37 @@ const Demo = () => {
     seteditTask(task);
     console.log("task-------", task);
   };
-  // const handleSearch = (e) => {
-  //   const searchValue = e.target.value;
-  //   setsearchTerm(searchValue);
-  // };
-
-  // const filterData = () => {
-  //   const filteredData = value.todos.filter((task) =>
-  //     task.title.toLowerCase().includes(searchTerm.toLowerCase())
-    
-  //   );
-
-  //   return filteredData;
-  // };
-  // const handleDateChange = (dates) => {
-  //   if (!dates || dates.length === 0) {
-  //     return;
-  //   }
-
-  //   const [start, end] = dates;
-
-  //   const filteredByDate = value.todos.filter((item) => {
-  //     const itemDate = moment(item.createdAt);
-  //     console.log("task date",itemDate);
-  
-  //     return itemDate.isBetween(start, end, "day", "[]");
-
-  //   });
-  //   setdatefilterdata(filteredByDate)
-  // };
 
   const handleSearch = (e) => {
     const searchValue = e.target.value;
     setsearchTerm(searchValue);
-};
+  };
 
-const handleDateChange = (dates) => {
+  const handleDateChange = (dates) => {
     if (!dates || dates.length === 0) {
-        setDateRange(null);
+      setDateRange(null);
     } else {
-        setDateRange(dates);
+      setDateRange(dates);
     }
-};
+    const startDate =moment(dates[0]).format('DD/MM/YY')
+    console.log('start date',startDate);
+    
+  };
 
-const getFilteredTasks = () => {
+  const getFilteredTasks = () => {
     return value.todos.filter((task) => {
-        const matchesSearch = task.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const SearchFilter = task.title
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+        
+      const taskDate = moment(task.createdAt);
+      const matchesDate = dateRange
+        ? taskDate.isBetween(dateRange[0], dateRange[1], "day", "[]")
+        : true;
 
-        const taskDate = moment(task.createdAt);
-        const matchesDate = dateRange ? taskDate.isBetween(dateRange[0], dateRange[1], "day", "[]") : true;
-
-        return matchesSearch && matchesDate;
+      return SearchFilter && matchesDate;
     });
-};
+  };
   return (
     <div className="container">
       <motion.div
