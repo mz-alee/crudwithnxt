@@ -9,7 +9,6 @@ import { MdOutlinePermMedia } from "react-icons/md";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import { IoList } from "react-icons/io5";
 import { BsGrid1X2Fill } from "react-icons/bs";
-import DatePicker from "react-datepicker";
 import moment from "moment-timezone";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -32,14 +31,12 @@ const HookForm = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [tododata, settododata] = useState([]);
 
   const todoSchema = yup.object({
     title: yup.string().min(3).max(20).required("plz enter your title"),
     body: yup.string().min(5).max(300).required("plz enter your description"),
-    todosData: yup.array(),
+    todos: yup.array(),
   });
-
   const {
     register,
     handleSubmit,
@@ -52,7 +49,6 @@ const HookForm = () => {
     resolver: yupResolver(todoSchema),
     defaultValues: {
       todos: [],
-      todosData: [],
     },
   });
 
@@ -64,7 +60,7 @@ const HookForm = () => {
     }, 3000);
   }, []);
 
-  const { fields, append, remove } = useFieldArray({
+  const { remove } = useFieldArray({
     control,
     name: "todos",
   });
@@ -77,30 +73,22 @@ const HookForm = () => {
         body: getValues("body"),
         image: image || editTask.image,
       };
-      const updatedTasks = fields.map((task) =>
+      const updatedTasks = value.todos.map((task) =>
         task.id === editTask.id ? updatedTask : task
       );
       setValue("todos", updatedTasks);
     } else {
-      setValue("todosData", [
-        ...value.todosData,
+      setValue("todos", [
+        ...value.todos,
         {
           title: data.title,
           body: data.body,
           createdAt: moment().format("MMM Do YYYY"),
           image: image,
+          id: Date.now(),
         },
       ]);
-      append({
-        title: data.title,
-        body: data.body,
-        image: image,
-        createdAt: moment().format("MMM Do YYYY"),
-      });
     }
-    console.log(fields);
-    const { todos } = data;
-    settododata(todos);
 
     toast("success");
     setValue("title", "");
@@ -142,7 +130,7 @@ const HookForm = () => {
   };
 
   const deleteSelectedTasks = () => {
-    const updatedTasks = fields.filter(
+    const updatedTasks = value.todos.filter(
       (task, index) => !selectedTasks.has(index)
     );
     setValue("todos", updatedTasks);
@@ -157,15 +145,14 @@ const HookForm = () => {
     const term = e.target.value;
     setSearchTerm(term);
 
-    const filteredTasks = fields.filter(
+    const filteredTasks = value.todos.filter(
       (task) =>
-        task.title.toLowerCase().includes(term.toLowerCase()) &&
+        task.title.toLowerCase().includes(term.toLowerCase()) ||
         task.body.toLowerCase().includes(term.toLowerCase())
     );
     setFilterData(filteredTasks);
   };
-
-  console.log("value(())))", value?.todosData);
+  const tasksToDisplay = searchTerm ? filterData : value.todos;
 
   return (
     <div>
@@ -277,137 +264,70 @@ const HookForm = () => {
                       : "col-task-container"
                   }
                 >
-                  {filterData.length > 0
-                    ? filterData.map((task, index) => {
-                        return (
-                          <div
-                            className="task animate__animated animate__backInLeft"
-                            id={toggleView === false ? "task" : "col-task"}
-                            key={task.id}
-                          >
-                            <div className="task-box-one">
-                              <div>
-                                <img
-                                  className={
-                                    toggleView === false
-                                      ? "profile-image"
-                                      : "col-profile-image"
-                                  }
-                                  src={
-                                    task.image
-                                      ? task.image
-                                      : "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"
-                                  }
-                                  alt="profile image"
-                                />
-                              </div>
-                              <div className="task-data">
-                                <h2
-                                  className="animate__animated animate__fadeIn animate__delay-1s"
-                                  style={{
-                                    fontFamily: ubuntuFont.style.fontFamily,
-                                  }}
-                                >
-                                  {task.title}
-                                </h2>
-                                <p className="animate__animated animate__fadeIn animate__delay-2s">
-                                  {task.body}
-                                </p>
-                                <p>{task.createdAt}</p>
-                              </div>
-                            </div>
-                            <div className="task-btns animate__animated animate__backInDown animate__delay-2s">
-                              <div
-                                onClick={() => handleEdit(task)}
-                                className="edit-btn"
-                              >
-                                <CiEdit />
-                              </div>
-                              <div>
-                                <button
-                                  className="delete-btn"
-                                  onClick={() => handleDelete(index)}
-                                >
-                                  <DelHandle />
-                                </button>
-                              </div>
-                              <div>
-                                <input
-                                  type="checkbox"
-                                  checked={selectedTasks.has(index)}
-                                  onChange={() => handleCheckboxChange(index)}
-                                />
-                              </div>
-                            </div>
+                  {tasksToDisplay.map((task, index) => {
+                    return (
+                      <div
+                        className="task animate__animated animate__backInLeft"
+                        id={toggleView === false ? "task" : "col-task"}
+                        key={task.id}
+                      >
+                        <div className="task-box-one">
+                          <div>
+                            <img
+                              className={
+                                toggleView === false
+                                  ? "profile-image"
+                                  : "col-profile-image"
+                              }
+                              src={
+                                task.image
+                                  ? task.image
+                                  : "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"
+                              }
+                              alt="profile image"
+                            />
                           </div>
-                        );
-                      })
-                    : fields &&
-                      fields.length &&
-                      fields.map((task, index) => {
-                        return (
-                          <div
-                            className="task animate__animated animate__backInLeft"
-                            id={toggleView === false ? "task" : "col-task"}
-                            key={task.id}
-                          >
-                            <div className="task-box-one">
-                              <div>
-                                <img
-                                  className={
-                                    toggleView === false
-                                      ? "profile-image"
-                                      : "col-profile-image"
-                                  }
-                                  src={
-                                    task.image
-                                      ? task.image
-                                      : "https://static.vecteezy.com/system/resources/previews/036/280/650/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg"
-                                  }
-                                  alt="profile image"
-                                />
-                              </div>
-                              <div className="task-data">
-                                <h2
-                                  className="animate__animated animate__fadeIn animate__delay-1s"
-                                  style={{
-                                    fontFamily: ubuntuFont.style.fontFamily,
-                                  }}
-                                >
-                                  {task.title}
-                                </h2>
-                                <p className="animate__animated animate__fadeIn animate__delay-2s">
-                                  {task.body}
-                                </p>
-                                <p>{task.createdAt}</p>
-                              </div>
-                            </div>
-                            <div className="task-btns animate__animated animate__backInDown animate__delay-2s">
-                              <div
-                                onClick={() => handleEdit(task)}
-                                className="edit-btn"
-                              >
-                                <CiEdit />
-                              </div>
-                              <div>
-                                <button
-                                  className="delete-btn"
-                                  onClick={() => handleDelete(index)}
-                                >
-                                  <DelHandle />
-                                </button>
-                              </div>
-                              <div>
-                                <input
-                                  type="checkbox"
-                                  checked={selectedTasks.has(index)}
-                                  onChange={() => handleCheckboxChange(index)}
-                                />
-                              </div>
-                            </div>
+                          <div className="task-data">
+                            <h2
+                              className="animate__animated animate__fadeIn animate__delay-1s"
+                              style={{
+                                fontFamily: ubuntuFont.style.fontFamily,
+                              }}
+                            >
+                              {task.title}
+                            </h2>
+                            <p className="animate__animated animate__fadeIn animate__delay-2s">
+                              {task.body}
+                            </p>
+                            <p>{task.createdAt}</p>
                           </div>
-                        );
-                      })}
+                        </div>
+                        <div className="task-btns animate__animated animate__backInDown animate__delay-2s">
+                          <div
+                            onClick={() => handleEdit(task)}
+                            className="edit-btn"
+                          >
+                            <CiEdit />
+                          </div>
+                          <div>
+                            <button
+                              className="delete-btn"
+                              onClick={() => handleDelete(index)}
+                            >
+                              <DelHandle />
+                            </button>
+                          </div>
+                          <div>
+                            <input
+                              type="checkbox"
+                              checked={selectedTasks.has(index)}
+                              onChange={() => handleCheckboxChange(index)}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
                 <div className="main-task-container-btns">
                   <button
