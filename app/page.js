@@ -1,16 +1,15 @@
 "use client";
-import React from "react";
-
-import Signup from "./components/Signup/page";
+import React, { useEffect, useState } from "react";
 import Login from "./components/Login/page";
-import Server from './components/Server';
-import Home from './components/Home';
+import Loader from "./Loader";
 const page = () => {
-  return (
-    <div>
-      <Login />
-    </div>
-  );
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(!isLoading);
+    }, 3000);
+  }, []);
+  return <div>{isLoading ? <Loader /> : <Login />}</div>;
 };
 
 export default page;

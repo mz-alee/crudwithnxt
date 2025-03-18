@@ -10,17 +10,22 @@ import { ToastContainer, toast, Slide } from "react-toastify";
 import { GoEye } from "react-icons/go";
 import { GoEyeClosed } from "react-icons/go";
 import "animate.css";
-import { getCookie } from 'cookies-next';
+import { getCookie } from "cookies-next";
 const Signup = () => {
   const [showPas, setShowPass] = useState(false);
   const [showConfirmPass, setShowConfirmPass] = useState(false);
   const dispatch = useDispatch();
   // validation
   const signUpValidation = yup.object({
-    username: yup.string().required("plz enter the username"),
-    email: yup.string().required("plz enter the email"),
-    password: yup.string().min(8).max(20).required("plz fill the password"),
-    confirmPassword: yup
+    username: yup.string().required(" enter the username"),
+    email: yup.string().email('Invalid Email').required(" enter the email"),
+    password: yup
+      .string()
+      .min(8)
+      .max(20)
+      .required("fill the password")
+      .matches(  /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).*$/, "Password must contain at least one uppercase letter, one number, and one special character"),
+        confirmPassword: yup
       .string()
       .required()
       .oneOf([yup.ref("password"), null], "password must be same"),
@@ -48,13 +53,13 @@ const Signup = () => {
   const value = getValues();
 
   const handleSignUp = (data) => {
-    const existingUser = JSON.parse(getCookie("users") || []);
-    const userExist = existingUser.some((u) => u.email === data.email);
-    if (userExist) {
-      toast.error("User With This Email Already Exist");
+    const usersCookie = getCookie("users");
+    const existingUser = usersCookie ? JSON.parse(usersCookie) : [];
+
+    if (existingUser.some((u) => u.email === data.email)) {
+      toast.error("This Email Is Already Exist");
       return;
     }
-
     const newUser = {
       username: data.username,
       email: data.email,
@@ -70,7 +75,7 @@ const Signup = () => {
     setValue("password", "");
     setValue("confirmPassword", "");
   };
-  
+
   return (
     <>
       <div className="signup-main-page">
@@ -94,7 +99,7 @@ const Signup = () => {
               onSubmit={handleSubmit(handleSignUp)}
             >
               <h2 className="text-center  italic  text-lg mb-4 animate__animated animate__bounceInDown animate__delay-1s animate__slow ">
-                Sign <span className='text-blue-600'> Up</span>
+                Sign <span className="text-blue-600"> Up</span>
               </h2>
               <div className="flex flex-col gap-8">
                 <div className="relative">
@@ -103,13 +108,13 @@ const Signup = () => {
                       errors.username
                         ? "border border-red-400"
                         : "border-gray-500"
-                    } border outline-none w-[250px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
+                    } border outline-none w-[280px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
                     {...register("username")}
                     type="text"
                     placeholder="UserName"
                   />
                   {errors.username && (
-                    <p className="text-red-500 text-sm  absolute animate__animated animate__fadeInUp fast ">
+                    <p className="text-red-500 text-[12px] absolute animate__animated animate__fadeInUp fast ">
                       {errors.username.message}
                     </p>
                   )}
@@ -119,13 +124,13 @@ const Signup = () => {
                   <input
                     className={`${
                       errors.email ? "border border-red-400" : "border-gray-500"
-                    } border outline-none w-[250px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
+                    } border outline-none w-[280px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
                     {...register("email")}
-                    type="email"
+                    type="text"
                     placeholder="email"
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-sm mt-1 absolute bottom-[-20px] animate__animated animate__fadeInUp fast">
+                    <p className="text-red-500 text-[12px] mt-1 absolute bottom-[-20px] animate__animated animate__fadeInUp fast">
                       {errors.email.message}
                     </p>
                   )}
@@ -136,7 +141,7 @@ const Signup = () => {
                       errors.password
                         ? "border border-red-400"
                         : "border-gray-500"
-                    } border outline-none w-[250px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
+                    } border outline-none w-[280px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
                     {...register("password")}
                     type={showPas ? "text" : "password"}
                     placeholder="password"
@@ -150,18 +155,18 @@ const Signup = () => {
                   </div>
 
                   {errors.password && (
-                    <p className="text-red-500 text-sm mt-1 absolute bottom-[-20px] animate__animated animate__fadeInUp fast">
+                    <p className="text-red-500 text-[12px]  w-70 absolute bottom-[-22px] h-[15px] mb-2 animate__animated animate__fadeInUp fast">
                       {errors.password.message}
                     </p>
                   )}
                 </div>
-                <div className="relative">
+                <div className="relative mt-1">
                   <input
                     className={`${
                       errors.confirmPassword
                         ? "border border-red-400"
                         : "border-gray-500"
-                    } border outline-none w-[250px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
+                    } border outline-none w-[280px] rounded py-1 px-2 animate__animated animate__backInDown animate__delay-1s animate__fast`}
                     {...register("confirmPassword")}
                     type={showConfirmPass ? "text" : "password"}
                     placeholder="confirm password"
@@ -175,7 +180,7 @@ const Signup = () => {
                   </div>
 
                   {errors.confirmPassword && (
-                    <p className="text-red-500 text-sm mt-1 absolute bottom-[-20px] animate__animated animate__fadeInUp fast">
+                    <p className="text-red-500 text-[12px] mt-1 absolute bottom-[-20px] animate__animated animate__fadeInUp fast">
                       {errors.confirmPassword.message}
                     </p>
                   )}

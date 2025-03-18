@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCookie ,setCookie,deleteCookie} from 'cookies-next';
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
 const user = () => {
   const storedData = getCookie("users");
   return storedData ? JSON.parse(storedData) : [];
@@ -37,11 +37,10 @@ export const authSlice = createSlice({
       setCookie("users", JSON.stringify(state.users), { maxAge: 60 * 60 * 60 });
       const user = JSON.parse(getCookie("users"));
       console.log("userssss", user);
-      localStorage.setItem("users", JSON.stringify(state.users));
     },
     loginData: (state, action) => {
       const { email, password } = action.payload;
-      const findUsers = JSON.parse(localStorage.getItem("users")) || [];
+      const findUsers = JSON.parse(getCookie("users")) || [];
       const filteredUsers = findUsers.find(
         (user) => user.email === email && user.password === password
       );
@@ -55,13 +54,13 @@ export const authSlice = createSlice({
       setCookie("loggedinUser", JSON.stringify(filteredUsers), {
         maxAge: 60 * 60 * 24,
       });
-      localStorage.setItem("loggedinUser", JSON.stringify(filteredUsers));
     },
     logout: (state) => {
+      
       setTimeout(() => {
-        state.loggedinUser = null;
-
-        localStorage.removeItem("loggedinUser");
+        console.log('logout btn clicked');
+        deleteCookie("loggedinUser");
+        // state.loggedinUser = null;
       }, 500);
     },
   },

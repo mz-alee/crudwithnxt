@@ -81,8 +81,8 @@ const Login = () => {
 
   // jsx code
   return (
-    <>
-      <div>
+    
+      <div className='login-main-page'>
         
         <ToastContainer
           position="top-right"
@@ -98,7 +98,7 @@ const Login = () => {
           transition={Slide}
         />
         <div>
-          <div className="login-main-page flex justify-center items-center h-screen ">
+          <div className=" flex justify-center items-center h-screen ">
             <div className="form-container shadow-xl flex flex-col bg-white/40 rounded-md h-[350px] gap-2 items-center px-8 animate__animated animate__fadeInDown">
               <form
                 className="flex flex-col justify-between h-full py-4"
@@ -177,7 +177,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 
