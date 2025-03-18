@@ -1,22 +1,16 @@
-import React from 'react'
-import Home from './components/Home'
-import HookForm from './components/HookForm'
-import Navbar from './components/Navbar'
-import Crud from './components/crud'
-import Demo from './components/Date-range'
-import DateRangeFilter from './components/Ai'
+"use client";
+import React from "react";
 
+import Signup from "./components/Signup/page";
+import Login from "./components/Login/page";
+import Server from './components/Server';
+import Home from './components/Home';
 const page = () => {
   return (
     <div>
-      {/* <Home/> */}
-      {/* <Navbar/> */}
-      {/* <Crud/>  */}
-      {/* <HookForm/> */}
-      <Demo/>
-      {/* <DateRangeFilter/> */}
+      <Login />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

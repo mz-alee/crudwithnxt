@@ -1,318 +1,37 @@
 @import "tailwindcss";
 
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+.login-main-page{
+  background-image: url('../public/login.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.signup-main-page{
+  background-image: url('../public/signup.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
-html,
-body {
-  background-color: #121212; /* Dark background */
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: white;
-}
 
-.main-page {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.form-container {
-  margin-top: 15px;
-  width: 40vw;
-  min-height: 70vh;
-  padding: 20px;
-  background-color: #1e1e1e; /* Darker container */
-  border-radius: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input {
-  color: white;
-  outline: none;
-  background-color: #2c2c2c; /* Dark input background */
-  margin: 10px 0;
-  border: 1px solid #444; /* Subtle border */
-  border-radius: 10px;
-  padding: 12px;
-  transition: border-color 0.3s ease;
-}
-
-input:focus {
-  border-color: #646cff; /* Highlight border on focus */
-}
-
-.form-btn {
-  width: 100%;
-  padding: 12px;
-  color: white;
-  background-color: #646cff; /* Vibrant button color */
-  outline: none;
-  border: none;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.form-btn:hover {
-  background-color: #535bf2; /* Darker on hover */
-}
-
-.task-container,
-.col-task-container {
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-  height: 350px;
-  width: 80vw;
-  border-radius: 20px;
-  overflow-x: scroll;
-  background-color: #2c2c2c; /* Dark container */
-  padding: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.col-task-container {
-  flex-direction: column;
-  overflow-y: scroll;
-}
-
-.task-container::-webkit-scrollbar,
-.col-task-container::-webkit-scrollbar {
-  display: none;
-}
-
-#task,
-#col-task {
-  width: 350px;
-  min-height: 200px;
-  padding: 20px;
-  background-color: #1e1e1e; /* Dark task background */
-  border-radius: 10px;
-  font-weight: 300;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-left: 4px solid #646cff; /* Accent border */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-#task:hover,
-#col-task:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-}
-
-.task-box-one {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-}
-
-.profile-image,
-.col-profile-image {
-  border-radius: 50%;
-  height: 100px;
-  width: 100px;
-  object-fit: cover;
-  border: 2px solid #646cff; /* Accent border */
-}
-
-.main-title {
-  text-transform: capitalize;
-  margin-top: 5px;
-  font-weight: 300;
-  font-size: 2rem;
-  color: #646cff; /* Accent color */
-}
-
-.task-data {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.task-data h2 {
-  font-size: 1.2rem;
-  color: #ffffff;
-}
-
-.task-data p {
-  font-size: 0.9rem;
-  color: #a0a0a0; /* Subtle text color */
-}
-
-.delete-btn {
-  background-color: transparent;
-  outline: none;
-  border: none;
-  color: #ff4d4d; /* Red for delete */
-  font-size: 25px;
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.delete-btn:hover {
-  color: #ff1a1a; /* Brighter red on hover */
-}
-
-.error {
-  color: #ff4d4d; /* Red for errors */
-  font-size: 12px;
-  text-transform: capitalize;
-  margin-left: 10px;
-}
-
-.edit-btn {
-  font-size: 20px;
-  margin-left: 10px;
-  color: #646cff; /* Accent color */
-  cursor: pointer;
-  transition: color 0.3s ease;
-}
-
-.edit-btn:hover {
-  color: #535bf2; /* Darker on hover */
-}
-
-.task-btns {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.btn {
-  width: 120px;
-  padding: 10px;
-  color: white;
-  background-color: #646cff; /* Accent color */
-  outline: none;
-  border: none;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn:hover {
-  background-color: #535bf2; /* Darker on hover */
-}
-
-.seletet-del-btn {
-  width: 200px;
-  padding: 10px;
-  color: white;
-  background-color: #ff4d4d; /* Red for delete */
-  outline: none;
-  border: none;
-  border-radius: 10px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.file-choose-input{
-  display: none;
-}
-.seletet-del-btn:hover {
-  background-color: #ff1a1a; /* Brighter red on hover */
-}
-
-.file-choose-label {
-  width: 100%;
-  border: 2px dashed #646cff; /* Accent border */
-  height: 200px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  border-radius: 20px;
-  background-color: #2c2c2c; /* Dark background */
-  transition: border-color 0.3s ease;
-}
-
-.file-choose-label:hover {
-  border-color: #535bf2; /* Darker on hover */
-}
-
-.file-select-icon {
-  font-size: 50px;
-  color: #646cff; /* Accent color */
-}
-.file-choose-label p {
-  font-size: 1rem;
-  color: #a0a0a0; /* Subtle text color */
-}
-
-.profile-empty-image {
-  width: 120px;
-  height: 120px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.main-task-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin-top: 20px;
-  height: auto;
-  width: 80vw;
-  border-radius: 20px;
-  background-color: #2c2c2c; /* Dark container */
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.main-task-container-btns {
-  margin-top: 20px;
-  display: flex;
-  gap: 15px;
-}
-
-/* Loader Animation */
-.loader-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-.loader {
-  border: 5px solid #f3f3f3;
-  border-top: 5px solid #646cff; /* Accent color */
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
+@layer utilities {
+  .scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
   }
-  100% {
-    transform: rotate(360deg);
+
+  .scrollbar::-webkit-scrollbar-track {
+    background: #1e293b; /* Dark background */
+    border-radius: 10px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background: #64748b; /* Slate gray */
+    border-radius: 10px;
+    border: 2px solid #1e293b; /* Adds padding effect */
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8; /* Lighter on hover */
   }
 }

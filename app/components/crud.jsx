@@ -4,7 +4,6 @@ import { Playwrite_IT_Moderna } from "next/font/google";
 import { Ubuntu } from "next/font/google";
 import { useForm, useFieldArray } from "react-hook-form";
 import { CiEdit } from "react-icons/ci";
-import DelHandle from "./DelHandle";
 import { MdOutlinePermMedia } from "react-icons/md";
 import { toast, ToastContainer, Bounce } from "react-toastify";
 import { IoList } from "react-icons/io5";
@@ -310,12 +309,12 @@ const HookForm = () => {
                             <CiEdit />
                           </div>
                           <div>
-                            <button
+                            {/* <button
                               className="delete-btn"
                               onClick={() => handleDelete(index)}
                             >
                               <DelHandle />
-                            </button>
+                            </button> */}
                           </div>
                           <div>
                             <input
